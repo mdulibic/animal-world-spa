@@ -1,29 +1,37 @@
 const express = require("express");
+const serveStatic = require("serve-static");
 const path = require("path");
-const cors = require("cors");
-
 const fs = require("fs");
-let jsonEncyclopedias;
-fs.readFile("data.json", function (err, data) {
 
-  jsonEncyclopedias = JSON.parse(data);
-  console.log(jsonEncyclopedias.length + " Encyclopedias parsed... eg.", jsonEncyclopedias[0]);
+//initialise the express package
+const app = express();
+
+//use the serve-static package to serve the bundled app files in the dist directory
+app.use("/", serveStatic(path.join(__dirname, "/dist")));
+
+// this * route is to serve project on different page routes except root `/`
+app.get(/.*/, function (req, res) {
+  res.sendFile(path.join(__dirname, "/dist/index.html"));
 });
 
-const app = express();
-app.use(express.static('public'));
-app.use(cors());
+let jsonEncyclopedias;
+fs.readFile("data.json", function (err, data) {
+  jsonEncyclopedias = JSON.parse(data);
+  console.log(
+    jsonEncyclopedias.length + " Encyclopedias parsed... eg.",
+    jsonEncyclopedias[0]
+  );
+});
 
 app.get("/encyclopedias", function (req, res) {
   console.log("Fetch encyclopedias");
   res.json(jsonEncyclopedias);
 });
 
-app.listen(8888, "localhost", function () {
-  console.log(
-    "Server listening on http://%s:%d in %s mode...",
-    this.address().address,
-    this.address().port,
-    app.settings.env
-  );
-});
+//heroku automatically assigns port so leave it to do it's
+//work, don't set a port in the heroku dashboard. while the
+//5000 or whatever number you set will be for your local
+//machine.
+const port = process.env.PORT || 5000;
+app.listen(port);
+console.log(`app is listening on port: ${port}`);
