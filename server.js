@@ -2,9 +2,11 @@ const express = require("express");
 const serveStatic = require("serve-static");
 const path = require("path");
 const fs = require("fs");
+const cors = require("cors");
 
 //initialise the express package
 const app = express();
+app.use(cors());
 
 //use the serve-static package to serve the bundled app files in the dist directory
 app.use("/", serveStatic(path.join(__dirname, "/dist")));
@@ -32,6 +34,6 @@ app.get("/encyclopedias", function (req, res) {
 //work, don't set a port in the heroku dashboard. while the
 //5000 or whatever number you set will be for your local
 //machine.
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8888;
 app.listen(port);
 console.log(`app is listening on port: ${port}`);

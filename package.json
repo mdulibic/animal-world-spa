@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm run build",
     "build": "npx vite build",
-    "start": "node index.js",
+    "start": "node server.js",
     "serve": "vite preview",
     "dev": "vite",
     "preview": "vite preview",
