@@ -4,10 +4,11 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "postinstall": "npm run build",
-    "start": "node server.js",
+    "prestart": "npm run build",
+    "build": "npx vite build",
+    "start": "node index.js",
+    "serve": "vite preview",
     "dev": "vite",
-    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
